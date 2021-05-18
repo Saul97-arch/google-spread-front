@@ -23,18 +23,26 @@ function FormInfo({ typeForm }) {
   const [apiRes, setApiRes] = useState("");
 
   const params = {
-    param1: name,
-    param2: email,
-    param3: password,
+    name: name,
+    email: email,
+    password: password,
   };
 
   const options = {
     method: "POST",
     body: JSON.stringify(params),
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+    },
   };
 
   const callAPI = () => {
-    fetch("http://localhost:8000/insertData", options).then((res) => res.json());
+    fetch("http://localhost:8000/insertData", options)
+      .then((res) => res.json())
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   /* useEffect(() => {
@@ -44,6 +52,7 @@ function FormInfo({ typeForm }) {
 
   return typeForm !== "Log in" ? (
     <form
+      action="/insertData"
       onSubmit={formHandler}
       className="flex flex-col items-center justify-center bg-gray-200 p-12 rounded-lg"
     >
@@ -57,12 +66,17 @@ function FormInfo({ typeForm }) {
         Senha
       </label>
       {passwordInput}
-      <button onClick={callAPI} className="text-green-900 p-2 bg-yellow-500 mt-4 w-2/3 rounded-lg">
+      <button
+        onClick={callAPI}
+        className="text-green-900 p-2 bg-yellow-500 mt-4 w-2/3 rounded-lg"
+      >
         {typeForm}
       </button>
     </form>
   ) : (
     <form
+      /* Provavelmente uma rota getData pra pegar infos do usuário */
+      action="/insertData"
       onSubmit={formHandler}
       className="flex flex-col items-center justify-center bg-gray-200 p-12 rounded-lg"
     >
