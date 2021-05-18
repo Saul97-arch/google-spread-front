@@ -19,6 +19,16 @@ function FormInfo({ typeForm }) {
   const [name, nameInput] = useInput({ type: "text" });
   const [email, emailInput] = useInput({ type: "email" });
   const [password, passwordInput] = useInput({ type: "password" });
+  
+  const dataAtual = () => {
+    const data = new Date();
+    const dia = String(data.getDate()).padStart(2, "0");
+    const mes = String(data.getMonth() + 1).padStart(2, "0");
+    const ano = data.getFullYear();
+    const dataAtual = dia + "/" + mes + "/" + ano;
+
+    return dataAtual;
+  };
 
   const [apiRes, setApiRes] = useState("");
 
@@ -26,6 +36,7 @@ function FormInfo({ typeForm }) {
     name: name,
     email: email,
     password: password,
+    dateSignIn: dataAtual(),
   };
 
   const options = {
@@ -33,7 +44,7 @@ function FormInfo({ typeForm }) {
     body: JSON.stringify(params),
     headers: {
       "Content-Type": "application/json",
-      "Accept": "application/json",
+      Accept: "application/json",
     },
   };
 
