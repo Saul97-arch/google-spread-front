@@ -56,10 +56,13 @@ function FormInfo({ typeForm }) {
       });
   };
 
-  /* useEffect(() => {
-    callAPI();
-  }, []);
- */
+  const insertOnCell = () => {
+    fetch("http://localhost:8000/update", {method: "PUT"})
+      .then((res) => res.json())
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   return typeForm !== "Log in" ? (
     <form
@@ -82,6 +85,12 @@ function FormInfo({ typeForm }) {
         className="text-green-900 p-2 bg-yellow-500 mt-4 w-2/3 rounded-lg"
       >
         {typeForm}
+      </button>
+      <button
+        onClick={insertOnCell}
+        className="text-green-900 p-2 bg-yellow-500 mt-4 w-2/3 rounded-lg"
+      >
+        Aoolhaa
       </button>
     </form>
   ) : (
