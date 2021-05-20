@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { ProfileContext } from "../contexts/Profile";
 
 // Jogar pros hooks
@@ -18,7 +18,7 @@ const useInput = ({ type }) => {
 
 function FormInfo({ typeForm }) {
   const formHandler = (e) => e.preventDefault();
-
+  const router = useRouter();
   const [name, nameInput] = useInput({ type: "text" });
   const [email, emailInput] = useInput({ type: "email" });
   const [password, passwordInput] = useInput({ type: "password" });
@@ -87,8 +87,7 @@ function FormInfo({ typeForm }) {
         return res.json();
       })
       .then((res) => {
-        // Context goes here! Pego o setter e seto fica glibakzin igual eu kkkk
-        console.log(res.data[1]);
+        console.log(res.data);
         setMyProfile({
           myName: res.data[0],
           myEmail: res.data[1],
@@ -96,6 +95,7 @@ function FormInfo({ typeForm }) {
           firstProduct: res.data[4],
           total: res.data[5],
         });
+        router.push("/Dashboard");
       })
       .catch((err) => {
         console.log(err);
