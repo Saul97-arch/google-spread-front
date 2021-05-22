@@ -34,8 +34,6 @@ function FormInfo({ typeForm }) {
     return dataAtual;
   };
 
-  const [apiRes, setApiRes] = useState("");
-
   const params = {
     name: name,
     email: email,
@@ -69,9 +67,6 @@ function FormInfo({ typeForm }) {
       });
   };
 
-  // Método usando fetch pra poder verificar se dados do front e back dão match
-  // Se for sucesso eu seto a variável de contexto email do contexto
-  // A lógica de dar push pro router pode ficar aqui(ideal), mais simples no contexto
   const login = () => {
     fetch("http://localhost:8000/login", options)
       .then((res) => {

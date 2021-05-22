@@ -5,39 +5,61 @@ import Head from "next/head";
 
 function Dashboard() {
   const [myProfile, setMyProfile] = useContext(ProfileContext);
-  const camposDashboard = {
-    0: "A",
-    1: "B",
-    2: "C",
-    3: "D",
-    4: "E",
-    5: "F",
+
+  const dataAtual = () => {
+    const data = new Date();
+    const dia = String(data.getDate()).padStart(2, "0");
+    const mes = String(data.getMonth() + 1).padStart(2, "0");
+    const ano = data.getFullYear();
+    const dataAtual = dia + "/" + mes + "/" + ano;
+
+    return dataAtual;
   };
-  // Esse vai pra dashboard
-  let val1 = 4;
-  let val2 = 2;
-  let cellVall = "MUDADO DO FRONT!";
-  const insertOnCell = () => {
-    // OLHA RHIAN
-    // http://localhost:8000/updateByParams?id=${val1}&id2=${val2}
-    fetch(`http://localhost:8000/updateByParam?val1=${val1}&val2=${val2}&cellVall=${cellVall}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        val1,
-        val2
-      }),
-    })
+
+  const getRowIndex = async () => {
+    const sheet = await fetch("http://localhost:8000/getRows", {
+      method: "GET",
+    }).then((res) => res.json());
+    // get index of the arr of user and insert the value in val2
+    for (let i = 0; i < sheet.length; i++) {
+      if (sheet[i].includes(myProfile.myEmail)) {
+        return i;
+      }
+    }
+  };
+
+  const insertRegisterData = async () => {
+    let val1 = 4;
+    let val2 = await getRowIndex();
+    let cellVall = dataAtual();
+    const sheet = await fetch("http://localhost:8000/getRows", {
+      method: "GET",
+    }).then((res) => res.json());
+
+    if (sheet[val2][4] !== "") {
+      return;
+    }
+
+    fetch(
+      `http://localhost:8000/updateByParam?val1=${val1}&val2=${val2}&cellVall=${cellVall}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          val1,
+          val2,
+        }),
+      }
+    )
       .then((res) => res.json())
       .catch((err) => {
         console.log(err);
       });
-
-      console.log(myProfile);
   };
+
   // To pra descobrir ainda
   const addProduct = async () => {
     const response = await (
@@ -64,7 +86,7 @@ function Dashboard() {
           </div>
           <div className="flex p-16">
             <button
-              onClick={insertOnCell}
+              onClick={insertRegisterData}
               className="text-green-900 p-2 bg-yellow-500 mt-4 w-32 rounded-lg"
             >
               Adicionar um produto
