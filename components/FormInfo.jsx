@@ -52,26 +52,18 @@ function FormInfo({ typeForm }) {
     },
   };
 
-  const callAPI = () => {
+  const signIn = () => {
     fetch("http://localhost:8000/insertData", options)
-      .then((res) => res.json())
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  // Esse vai pra dashboard
-  const insertOnCell = () => {
-    fetch("http://localhost:8000/update", { method: "PUT" })
-      .then((res) => res.json())
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  // To pra descobrir ainda
-  const getRows = () => {
-    fetch("http://localhost:8000/getRows", { method: "GET" })
-      .then((res) => res.json())
+      .then((res) => {
+        setMyProfile({
+          myName: res.data[0],
+          myEmail: res.data[1],
+          firstSignIn: res.data[3],
+          firstProduct: res.data[4],
+          total: res.data[5],
+        });
+        router.push("/Dashboard");
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -87,14 +79,14 @@ function FormInfo({ typeForm }) {
         return res.json();
       })
       .then((res) => {
-        console.log(res.data);
         setMyProfile({
-          myName: res.data[0],
-          myEmail: res.data[1],
-          firstSignIn: res.data[3],
-          firstProduct: res.data[4],
-          total: res.data[5],
+          myName: res.name,
+          myEmail: res.email,
+          firstSignIn: res.birthday,
+          firstProduct: res.dateFirstProduct,
+          total: res.productCount,
         });
+        console.log("Data from backend:" , res);
         router.push("/Dashboard");
       })
       .catch((err) => {
@@ -119,7 +111,7 @@ function FormInfo({ typeForm }) {
       </label>
       {passwordInput}
       <button
-        onClick={callAPI}
+        onClick={signIn}
         className="text-green-900 p-2 bg-yellow-500 mt-4 w-2/3 rounded-lg"
       >
         {typeForm}
