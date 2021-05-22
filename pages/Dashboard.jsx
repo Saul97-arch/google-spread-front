@@ -20,7 +20,7 @@ function Dashboard() {
     const sheet = await fetch("http://localhost:8000/getRows", {
       method: "GET",
     }).then((res) => res.json());
-    // get index of the arr of user and insert the value in val2
+    // get index of the arr of user and insert the value in startRowIndex
     for (let i = 0; i < sheet.length; i++) {
       if (sheet[i].includes(myProfile.myEmail)) {
         return i;
@@ -29,19 +29,19 @@ function Dashboard() {
   };
 
   const insertRegisterData = async () => {
-    let val1 = 4;
-    let val2 = await getRowIndex();
+    let startColumnIndex = 4;
+    let startRowIndex = await getRowIndex();
     let cellVall = dataAtual();
     const sheet = await fetch("http://localhost:8000/getRows", {
       method: "GET",
     }).then((res) => res.json());
 
-    if (sheet[val2][4] !== "") {
+    if (sheet[startRowIndex][4]) {
       return;
     }
 
     fetch(
-      `http://localhost:8000/updateByParam?val1=${val1}&val2=${val2}&cellVall=${cellVall}`,
+      `http://localhost:8000/updateByParam?startColumnIndex=${startColumnIndex}&startRowIndex=${startRowIndex}&cellVall=${cellVall}`,
       {
         method: "POST",
         headers: {
@@ -49,8 +49,8 @@ function Dashboard() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          val1,
-          val2,
+          startColumnIndex,
+          startRowIndex,
         }),
       }
     )
@@ -58,16 +58,6 @@ function Dashboard() {
       .catch((err) => {
         console.log(err);
       });
-  };
-
-  // To pra descobrir ainda
-  const addProduct = async () => {
-    const response = await (
-      await fetch("http://localhost:8000/update", { method: "PUT", body: 333 })
-    ).json();
-
-    // Peguei o array do usuário
-    // Enviar o email do usuário pra filtrar no back
   };
 
   return (
