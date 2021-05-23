@@ -17,8 +17,8 @@ const useInput = ({ type }) => {
 };
 
 function FormInfo({ typeForm }) {
-  const formHandler = (e) => e.preventDefault();
   const router = useRouter();
+  const formHandler = (e) => e.preventDefault();
   const [name, nameInput] = useInput({ type: "text" });
   const [email, emailInput] = useInput({ type: "email" });
   const [password, passwordInput] = useInput({ type: "password" });
@@ -54,6 +54,9 @@ function FormInfo({ typeForm }) {
     // Refatorar o helper que o Rhian fez tá zoando o fluxo
     fetch("http://localhost:8000/insertData", options)
       .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
         setMyProfile({
           myName: name,
           myEmail: email,
@@ -61,8 +64,10 @@ function FormInfo({ typeForm }) {
           firstProduct: "",
           total: 0,
         });
+        // Não executa, não sei o porquê
         console.log("THEN");
         router.push("/Dashboard");
+        return res;
       })
       .catch((err) => {
         console.log(err);
@@ -83,7 +88,7 @@ function FormInfo({ typeForm }) {
           firstProduct: res.dateFirstProduct,
           total: res.productCount,
         });
-        console.log("Data from backend:" , res);
+        console.log("Data from backend:", res);
         router.push("/Dashboard");
       })
       .catch((err) => {

@@ -92,11 +92,11 @@ function Dashboard() {
       <div className="h-full w-full bg-green-700">
         <div className="flex flex-col items-center justify-center h-full">
           <div className="bg-gray-50 p-16 rounded-md">
-            <p>
+           {/*  <p>
               {myProfile.myName} | {myProfile.myEmail} | {myProfile.firstSignIn}{" "}
               | {myProfile.firstProduct} | {myProfile.total}
-            </p>
-            <p>Bem vindo {myProfile.myName}!</p>
+            </p> */}
+            <h1 className="text-5xl">Bem vindo {myProfile.myName}!</h1>
           </div>
           <div className="flex p-16">
             <button
