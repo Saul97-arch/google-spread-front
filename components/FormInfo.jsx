@@ -1,20 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
 import { ProfileContext } from "../contexts/Profile";
-
-// Jogar pros hooks
-const useInput = ({ type }) => {
-  const [value, setValue] = useState("");
-  const input = (
-    <input
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      type={type}
-      className="rounded-md p-1"
-    />
-  );
-  return [value, input];
-};
+import { useInput } from "../hooks/input";
 
 function FormInfo({ typeForm }) {
   const router = useRouter();
@@ -24,6 +11,7 @@ function FormInfo({ typeForm }) {
   const [password, passwordInput] = useInput({ type: "password" });
   const [myProfile, setMyProfile] = useContext(ProfileContext);
 
+  //Passa pra helper beleza
   const dataAtual = () => {
     const data = new Date();
     const dia = String(data.getDate()).padStart(2, "0");
@@ -34,6 +22,10 @@ function FormInfo({ typeForm }) {
     return dataAtual;
   };
 
+  //qual arquivo tu quer o useEffect?
+  // Dashboard, quero as infos rederizadas nele, já tem umas paradas já jogadas lá nos comentários
+  // Só quero atulizar dinâmicamente o total de produtos com o useEffect
+  // SAY NO MORE
   const params = {
     name: name,
     email: email,
@@ -88,7 +80,7 @@ function FormInfo({ typeForm }) {
           firstProduct: res.dateFirstProduct,
           total: res.productCount,
         });
-        console.log("Data from backend:", res);
+        // console.log("Data from backend:", res);
         router.push("/Dashboard");
       })
       .catch((err) => {

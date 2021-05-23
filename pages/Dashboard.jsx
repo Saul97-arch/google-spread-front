@@ -1,10 +1,20 @@
 import React from "react";
-import { useEffect, useState, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../contexts/Profile";
 import Head from "next/head";
+import { useInput } from "../hooks/input";
+import { fetcher } from "../hooks/fetcher";
 
 function Dashboard() {
   const [myProfile, setMyProfile] = useContext(ProfileContext);
+  const [totalNumber, setTotalNumber] = useState(null);
+  const [startRowIndex, setStartRowIndex] = useState(null);
+  useEffect(async () => {
+    const startRowIndex = await getRowIndex(); // UseEffect
+    const { res } = await getCell(startRowIndex, startRowIndex + 1); // UseEfect
+    setTotalNumber(res);
+    setStartRowIndex(startRowIndex);
+  }, []);
 
   const dataAtual = () => {
     const data = new Date();
@@ -61,27 +71,20 @@ function Dashboard() {
   };
 
   const registerProduct = async () => {
-    let startRowIndex = await getRowIndex();
     let dataDeCadastroPrimeiroProduto = dataAtual();
 
     const sheet = await fetch("http://localhost:8000/getRows", {
       method: "GET",
     }).then((res) => res.json());
 
-    const { res } = await getCell(startRowIndex, startRowIndex + 1);
-    let totalNumber = parseInt(res);
-    console.log(res);
-    totalNumber++;
-    console.log("startRowIndex", typeof startRowIndex);
-    
-    insertValue(5, startRowIndex, totalNumber);
+    // console.log("startRowIndex", typeof startRowIndex);
+    setTotalNumber(Number(totalNumber) + 1);
+    insertValue(5, startRowIndex, Number(totalNumber) + 1);
 
     if (sheet[startRowIndex][4] === "") {
-      console.log("ENTROU")
       insertValue(4, startRowIndex, dataDeCadastroPrimeiroProduto);
       return;
-    } 
-    
+    }
   };
 
   return (
@@ -92,20 +95,17 @@ function Dashboard() {
       <div className="h-full w-full bg-green-700">
         <div className="flex flex-col items-center justify-center h-full">
           <div className="bg-gray-50 p-16 rounded-md">
-           {/*  <p>
-              {myProfile.myName} | {myProfile.myEmail} | {myProfile.firstSignIn}{" "}
-              | {myProfile.firstProduct} | {myProfile.total}
-            </p> */}
             <h1 className="text-5xl">Bem vindo {myProfile.myName}!</h1>
           </div>
           <div className="flex p-16">
             <button
               onClick={registerProduct}
               className="text-green-900 p-2 bg-yellow-500 mt-4 w-32 rounded-lg"
-            >
+              >
               Adicionar um produto
             </button>
           </div>
+              <div className="bg-gray-50 p-4 rounded-md">{totalNumber !== null && <span>Total de produtos: {totalNumber}</span>}</div>
         </div>
       </div>
     </div>
