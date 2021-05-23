@@ -55,11 +55,11 @@ function FormInfo({ typeForm }) {
     fetch("http://localhost:8000/insertData", options)
       .then((res) => {
         setMyProfile({
-          myName: res.data[0],
-          myEmail: res.data[1],
-          firstSignIn: res.data[3],
-          firstProduct: res.data[4],
-          total: res.data[5],
+          myName: name,
+          myEmail: email,
+          firstSignIn: dataAtual(),
+          firstProduct: "",
+          total: 0,
         });
         console.log("THEN");
         router.push("/Dashboard");

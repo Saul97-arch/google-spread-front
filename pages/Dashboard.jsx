@@ -41,7 +41,7 @@ function Dashboard() {
 
   const insertValue = (startColumnIndex, startRowIndex, cellVall) => {
     fetch(
-      `http://localhost:8000/updateByParam?startColumnIndex=${startColumnIndex}&startRowIndex=${startRowIndex}&cellVall=${parseInt(cellVall)}`,
+      `http://localhost:8000/updateByParam?startColumnIndex=${startColumnIndex}&startRowIndex=${startRowIndex}&cellVall=${cellVall}`,
       {
         method: "POST",
         headers: {
@@ -61,25 +61,27 @@ function Dashboard() {
   };
 
   const registerProduct = async () => {
-    let startColumnIndex = 5;
     let startRowIndex = await getRowIndex();
     let dataDeCadastroPrimeiroProduto = dataAtual();
-    console.log(startRowIndex);
+
     const sheet = await fetch("http://localhost:8000/getRows", {
       method: "GET",
     }).then((res) => res.json());
-    
-    const { res } = await getCell(startRowIndex, startRowIndex + 1); 
-    let totalNumber = parseInt(res); 
+
+    const { res } = await getCell(startRowIndex, startRowIndex + 1);
+    let totalNumber = parseInt(res);
     console.log(res);
-    totalNumber++; 
+    totalNumber++;
+    console.log("startRowIndex", typeof startRowIndex);
     
-    insertValue(5, startRowIndex, totalNumber); 
-    
+    insertValue(5, startRowIndex, totalNumber);
+
     if (sheet[startRowIndex][4] === "") {
-      insertValue(startColumnIndex, startRowIndex, dataDeCadastroPrimeiroProduto);
+      console.log("ENTROU")
+      insertValue(4, startRowIndex, dataDeCadastroPrimeiroProduto);
       return;
-    }
+    } 
+    
   };
 
   return (
