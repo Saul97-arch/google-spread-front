@@ -16,6 +16,14 @@ function Dashboard() {
     return dataAtual;
   };
 
+  const getCell = async (startRowIndex = 1, endRowIndex = 2) => {
+    const cell = await fetch(`http://localhost:8000/getCell?startRowIndex=${startRowIndex}&endRowIndex=${endRowIndex}`, {
+      method: "POST",
+    }).then((res) => res.json());
+
+    return cell;
+  };
+
   const getRowIndex = async () => {
     const sheet = await fetch("http://localhost:8000/getRows", {
       method: "GET",
@@ -28,7 +36,12 @@ function Dashboard() {
     }
   };
 
+  
+
   const insertRegisterData = async () => {
+    const cell = await getCell();
+    console.log("OLHA A CELULA",cell.res);
+
     let startColumnIndex = 4;
     let startRowIndex = await getRowIndex();
     let cellVall = dataAtual();

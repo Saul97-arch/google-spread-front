@@ -51,6 +51,7 @@ function FormInfo({ typeForm }) {
   };
 
   const signIn = () => {
+    // Refatorar o helper que o Rhian fez tá zoando o fluxo
     fetch("http://localhost:8000/insertData", options)
       .then((res) => {
         setMyProfile({
@@ -60,6 +61,7 @@ function FormInfo({ typeForm }) {
           firstProduct: res.data[4],
           total: res.data[5],
         });
+        console.log("THEN");
         router.push("/Dashboard");
       })
       .catch((err) => {
@@ -110,18 +112,6 @@ function FormInfo({ typeForm }) {
         className="text-green-900 p-2 bg-yellow-500 mt-4 w-2/3 rounded-lg"
       >
         {typeForm}
-      </button>
-      <button
-        onClick={insertOnCell}
-        className="text-green-900 p-2 bg-yellow-500 mt-4 w-2/3 rounded-lg"
-      >
-        Insere
-      </button>
-      <button
-        onClick={getRows}
-        className="text-green-900 p-2 bg-yellow-500 mt-4 w-2/3 rounded-lg"
-      >
-        Aoolhaa
       </button>
     </form>
   ) : (
