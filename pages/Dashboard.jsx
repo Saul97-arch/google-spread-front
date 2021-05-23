@@ -17,9 +17,12 @@ function Dashboard() {
   };
 
   const getCell = async (startRowIndex = 1, endRowIndex = 2) => {
-    const cell = await fetch(`http://localhost:8000/getCell?startRowIndex=${startRowIndex}&endRowIndex=${endRowIndex}`, {
-      method: "POST",
-    }).then((res) => res.json());
+    const cell = await fetch(
+      `http://localhost:8000/getCell?startRowIndex=${startRowIndex}&endRowIndex=${endRowIndex}`,
+      {
+        method: "POST",
+      }
+    ).then((res) => res.json());
 
     return cell;
   };
@@ -36,24 +39,7 @@ function Dashboard() {
     }
   };
 
-  
-
-  const insertRegisterData = async () => {
-    
-
-    let startColumnIndex = 4;
-    let startRowIndex = await getRowIndex();
-    let cellVall = dataAtual();
-    
-    const sheet = await fetch("http://localhost:8000/getRows", {
-      method: "GET",
-    }).then((res) => res.json());
-    const cell = await getCell(startRowIndex, startRowIndex + 1);
-    console.log("OLHA A CELULA",cell.res);
-    if (sheet[startRowIndex][4]) {
-      return;
-    }
-
+  const insertValue = (startColumnIndex, startRowIndex, cellVall) => {
     fetch(
       `http://localhost:8000/updateByParam?startColumnIndex=${startColumnIndex}&startRowIndex=${startRowIndex}&cellVall=${cellVall}`,
       {
@@ -72,6 +58,21 @@ function Dashboard() {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const insertRegisterData = async () => {
+    let startColumnIndex = 4;
+    let startRowIndex = await getRowIndex();
+    let dataDeCadastroPrimeiroProduto = dataAtual();
+
+    const sheet = await fetch("http://localhost:8000/getRows", {
+      method: "GET",
+    }).then((res) => res.json());
+    const cell = await getCell(startRowIndex, startRowIndex + 1);
+    insertValue(startColumnIndex, startRowIndex, dataDeCadastroPrimeiroProduto);
+    if (sheet[startRowIndex][4]) {
+      return;
+    }
   };
 
   return (
