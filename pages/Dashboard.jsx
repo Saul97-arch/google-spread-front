@@ -41,7 +41,7 @@ function Dashboard() {
 
   const insertValue = (startColumnIndex, startRowIndex, cellVall) => {
     fetch(
-      `http://localhost:8000/updateByParam?startColumnIndex=${startColumnIndex}&startRowIndex=${startRowIndex}&cellVall=${cellVall}`,
+      `http://localhost:8000/updateByParam?startColumnIndex=${startColumnIndex}&startRowIndex=${startRowIndex}&cellVall=${parseInt(cellVall)}`,
       {
         method: "POST",
         headers: {
@@ -60,17 +60,24 @@ function Dashboard() {
       });
   };
 
-  const insertRegisterData = async () => {
-    let startColumnIndex = 4;
+  const registerProduct = async () => {
+    let startColumnIndex = 5;
     let startRowIndex = await getRowIndex();
     let dataDeCadastroPrimeiroProduto = dataAtual();
-
+    console.log(startRowIndex);
     const sheet = await fetch("http://localhost:8000/getRows", {
       method: "GET",
     }).then((res) => res.json());
-    const cell = await getCell(startRowIndex, startRowIndex + 1);
-    insertValue(startColumnIndex, startRowIndex, dataDeCadastroPrimeiroProduto);
-    if (sheet[startRowIndex][4]) {
+    
+    const { res } = await getCell(startRowIndex, startRowIndex + 1); 
+    let totalNumber = parseInt(res); 
+    console.log(res);
+    totalNumber++; 
+    
+    insertValue(5, startRowIndex, totalNumber); 
+    
+    if (sheet[startRowIndex][4] === "") {
+      insertValue(startColumnIndex, startRowIndex, dataDeCadastroPrimeiroProduto);
       return;
     }
   };
@@ -91,7 +98,7 @@ function Dashboard() {
           </div>
           <div className="flex p-16">
             <button
-              onClick={insertRegisterData}
+              onClick={registerProduct}
               className="text-green-900 p-2 bg-yellow-500 mt-4 w-32 rounded-lg"
             >
               Adicionar um produto
