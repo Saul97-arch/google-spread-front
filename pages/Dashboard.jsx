@@ -39,16 +39,17 @@ function Dashboard() {
   
 
   const insertRegisterData = async () => {
-    const cell = await getCell();
-    console.log("OLHA A CELULA",cell.res);
+    
 
     let startColumnIndex = 4;
     let startRowIndex = await getRowIndex();
     let cellVall = dataAtual();
+    
     const sheet = await fetch("http://localhost:8000/getRows", {
       method: "GET",
     }).then((res) => res.json());
-
+    const cell = await getCell(startRowIndex, startRowIndex + 1);
+    console.log("OLHA A CELULA",cell.res);
     if (sheet[startRowIndex][4]) {
       return;
     }
