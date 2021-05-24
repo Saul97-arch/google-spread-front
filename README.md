@@ -11,7 +11,6 @@ Esse é um app  [Next.js](https://nextjs.org/) projeto instalado com [`create-ne
 - Node.js
 - React.js
 - Next.js
-- Nodemon
 
 ## **Pré requisitos**:
 
